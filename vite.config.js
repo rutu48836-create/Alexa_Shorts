@@ -4,6 +4,12 @@ import react from '@vitejs/plugin-react'
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react()],
+  optimizeDeps: {
+    force: true, // Force re-optimization
+    exclude: [] // Clear any exclusions
+  },
+  server: {
+    port: 5173,
+    strictPort: false // Allow using alternative port
+  }
 })
-
-export const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000'

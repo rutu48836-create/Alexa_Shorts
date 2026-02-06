@@ -6,7 +6,7 @@ import {ArrowUp,Cog,Sparkle,Link,File,ImagePlay,ScrollText} from 'lucide-react';
 import { Sidebar } from "../Components/SideBar";
 import { useAuth } from "../Components/Auth.jsx";
 import { useNavigate } from "react-router";
-import {API_URL} from '../../vite.config.js'
+import { API_URL } from "../config.js";
 
 export function Home(){
   
@@ -21,6 +21,7 @@ export function Home(){
   const [settingsOpen,setSettingsOpen] = useState(false)
   const [Broll,setBroll] = useState('none')
 
+ 
 
    const navigate = useNavigate()
 
@@ -223,7 +224,7 @@ className={styles.setting_btn}><Cog color="#686262" size={20}/></button>
 
  <div className={styles.shorts_selector_setting_wrapper}>
 
-<h4>Shorts background</h4> 
+<h4>Background</h4> 
 <select 
   value={conversionMode} 
   onChange={(e) => setConversionMode(e.target.value)}
@@ -248,7 +249,7 @@ className={styles.setting_btn}><Cog color="#686262" size={20}/></button>
 
  <div className={styles.shorts_selector_setting_wrapper}>
 
-<h4>Number of Shorts</h4> 
+<h4>No of Shorts</h4> 
  <select 
               value={numShorts} 
   onChange={(e) => setNumShorts(e.target.value)}
@@ -327,7 +328,7 @@ onChange={(e) => setCaptionStyle(e.target.value)}>
 
   return (
     <div className={styles.Container}>
-   <aside><Sidebar/></aside>   
+   <aside><Sidebar credits={credits} setSettingsOpen= {setSettingsOpen}/></aside>   
       
     <div className={styles.main_content_wrapper}>
       <div className={styles.Account_info}>

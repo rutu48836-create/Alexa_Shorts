@@ -1,5 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
+
 
 html,body{
 
@@ -20,9 +22,14 @@ padding: 0.2rem;
 flex-direction: column;
 gap: 10px;
 overflow:hidden;
-height: 100vh;
-position: fixed;
+min-height: 100vh;
+position: relative;
 background:#fff;
+z-index: 9999;
+top:0;
+left:0;
+right:0;
+bottom:0;
 
 }
 
@@ -31,7 +38,28 @@ background:#fff;
 min-width: 70px;
 display: flex;
 align-items: center;
+justify-content:flex-start;
+position:relative;
 
+}
+
+.Toggle_btn_wrapper_closed{
+
+width: 100%;
+min-height: 50px;
+display: flex;
+align-items: center;
+justify-content: center;
+width:80%;
+
+}
+
+.Toggle_btn_wrapper_closed button{
+  display:flex;
+  place-self: center;
+  margin:0;
+  align-items:center;
+  justify-content: center;
 }
 
 .Toggle_btn_wrapper{
@@ -40,9 +68,41 @@ width: 100%;
 min-height: 40px;
 display: flex;
 align-items: center;
-justify-content: center;
+justify-content:center;
+flex-direction: row-reverse;
+margin-top: 20px;
 
 }
+
+.Toggle_btn_wrapper_open{
+
+width: 100%;
+min-height: 50px;
+display: flex;
+align-items: center;
+justify-content:space-between;
+flex-direction: row-reverse;
+
+
+}
+
+.Toggle_btn_wrapper h3{
+
+font-size: 18px;
+font-family: "Inter",sans-serif;
+font-weight: 400;
+margin-left: 10px;
+
+}
+
+.Toggle_open{
+  display: flex;
+  align-items:center;
+  justify-content: space-between;
+  width:100%;
+  min-height:40px;
+}
+
 
 .Toggle_btn_wrapper button{
 
@@ -59,14 +119,13 @@ background: #fff;
 .Sidebar_links_closed{
 
  width: 100%;
- min-height: 34vh;
  display: flex;
  align-items: center;
  justify-content: flex-start;
  flex-direction: column;
- margin-top: 10px;
+ margin-top: 0px;
  flex: 1;
-
+ gap:12px;
 
 }
 
@@ -80,6 +139,7 @@ background: #fff;
   padding: 0;
   margin: 0;
   gap: 12px;
+  margin-top: 20px;
 }
 
 
@@ -100,32 +160,35 @@ background: #fff;
 /* Side_Bar Open */ 
 
 .Sidebar_open{
-
-min-width: 220px;
-display: flex;
-z-index: 9999;
-right:0;
-left:0;
-top:0;
-bottom:0;
-position: relative;
-background: #fff;
+  min-width: 220px;
+  min-height: 100vh;     /* ADD THIS - gives parent a height */
+  display: flex;
+  flex-direction: column; /* ADD THIS - makes children stack vertically */
+  z-index: 9999;
+  position: relative;
+  background: #fff;
 
 }
 
-.Links_open{
-   width: 100%;
+.Sidebar_open ul{
+  gap:14px;
+}
+
+.Links_open ul{
+
+ width: 100%;
  display: flex;
  align-items: flex-start;
  justify-content: flex-start;
  flex-direction: column;
- margin-top: 0px;
- flex: 1;
- min-height: 30vh;
-border:1px solid red;
+ margin-top: 20px;
+ gap:80px;
+ border:1px solid black;
+ background: transparent;
+
 }
 
-.Links_open li{
+.Links_open ul,li{
 
 width: 90%;
 display: flex;
@@ -135,7 +198,7 @@ padding: .4rem;
 border-radius: 4px;
 font-size: 14px;
 justify-content: flex-start;
-font-family: "roboto",sans-serif;
+font-family: "Inter",sans-serif;
 font-weight: 430;
 
 }
@@ -163,14 +226,22 @@ font-weight: 430;
 
 .user_info_wrapper{
 
-  min-width:90%;
+  min-width:100%;
   min-height: 60px;
   padding:0.4em;
-  border:1px solid #0f0f0f;
+box-shadow: rgba(0, 0, 0, 0.05) 0px 6px 24px 0px, rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
   display: flex;
   align-items:center;
   justify-content: flex-start;
   gap: 20px;
+    flex-shrink: 0;       /* ADD THIS - prevents it from shrinking */
+  margin: 0 auto; 
+  place-self: center;
+  margin-left: -10px;
+  position: sticky;
+    bottom: 0;              /* Sticks to bottom */
+  background: #fff;       /* Important: needs background to cover content behind it */
+  z-index: 10000;  
 
 }
 
@@ -180,14 +251,15 @@ height:100%;
 }
 
 .profile_pic_wrapper{
-  width:40px;
-  height:40px;
+  width:45px;
+  height:45px;
   border-radius: 50%;
   border: 1px solid #000;
   align-items: center;
   justify-content: center;
   display: flex;
   overflow: hidden;
+  margin-left: 10px;
 }
 
 .profile_pic_wrapper img{
@@ -195,14 +267,25 @@ height:100%;
   min-height: 100%;
 }
 
-.details_user{
-  min-width: 80%;
+.details_users{
+  max-width: 80%;
   height: 100%;
+  flex:1;
   display: flex;
-  align-items: center;
-  justify-content: flex-start;
+  align-items: flex-start;
+  justify-content:center;
   flex-direction: column;
-  border: 1px solid rgb(243, 59, 59);
+  gap:8px;
+}
+
+.user_name{
+  font-size: 14px;
+  font-family: "Inter",sans-serif;
+}
+
+.user_tier{
+  font-size: 12px;
+  color: #7a7777;
 }
 
 .Account_Wrapper{
@@ -432,8 +515,6 @@ cursor: pointer;
 }
 
 /* Subscription popup code */
-
-@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
 .subscription_Card{
 
@@ -681,11 +762,17 @@ gap:20px;
     cursor: pointer;
   }
 
+  .Toggle_open{
+    display:none;
+  }
+
 /* mobile screen code */ 
 
 @media screen and (max-width:768px) {
 
- 
+ .Sidebar_wrapper{
+  border:1px solid #ddd;
+ }
 
   .Toggle_btn_wrapper_mobile{
     position: fixed;
@@ -724,9 +811,36 @@ display: none;
   border:none;
 }
 
+.Toggle_open{
+  display: flex;
+  align-items:center;
+  justify-content:space-between;
+  flex-direction:row-reverse;
+  min-height:40px;
+  width:42%;
+  overflow: hidden;
+}
+
+.Toggle_open h3{
+  font-weight: 430;
+  font-family: "Inter",sans-serif;
+}
+
+.Toggle_open button{
+
+ display:flex;
+ align-items:center;
+ justify-content: center;
+
+}
+
   .Sidebar_links_closed{
     display: none;
 
+  }
+
+  .Toggle_btn_wrapper h3{
+    display:none;
   }
 
   .Sidebar_wrapper{
@@ -741,12 +855,13 @@ display: none;
   .Sidebar_open{
     min-width: 220px;
     display:flex;
-    border:1px solid #ddd;
     position:relative;
     top:0;
     bottom: 0;
     left:0;
     right: 0;
+    border:1px solid #ddd;
+    border-top: none;
   }
 
 

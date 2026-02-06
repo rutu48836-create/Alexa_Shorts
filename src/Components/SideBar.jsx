@@ -9,8 +9,9 @@ import { auth } from "../Backend/Firebase.js";
 import { useNavigate } from 'react-router';
 import { useAuth } from "../Components/Auth.jsx";
 import { createClient } from '@supabase/supabase-js'
+import { API_URL } from "../config.js";
 
-export function Sidebar(){
+export function Sidebar({credits,setSettingsOpen}){
 
  const [IsOpen,setIsOpen] = useState(false)
  const AuthContext = createContext();
@@ -20,8 +21,8 @@ export function Sidebar(){
    const [plan, setPlan] = useState(null)
    const [setting_open,setSetting_Open] = useState(false)
    const [subscription,setSubscription_Open] = useState(false)
-   const [credits,setCredits] = useState(50)
    const [tier,setTier] = useState('free')
+   const [Credits,setCredits] = useState(50)
 
   const navigate = useNavigate()
 
@@ -40,11 +41,99 @@ export function Sidebar(){
 
   }
 
+ useEffect(() => {
+
+    
+   async function create_user() {
+      try {
+        const res = await fetch(`${API_URL}/api/create-user`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            uid: user.uid,
+            email: user.email
+          })
+        })
+
+        const data = await res.json()
+
+        if (!res.ok) {
+          console.error("Failed to create user:", data.error)
+          return false
+        }
+
+        console.log("User creation result:", data)
+        return true
+      } catch (err) {
+        console.error("Create user error:", err)
+        return false
+      }
+    }
+
+    async function loadCredits() {
+      try {
+        const res = await fetch(`${API_URL}/api/user/${user.uid}`)
+        const data = await res.json()
+
+        if (res.ok) {
+          console.log("Credits loaded:", data.credits)
+          setCredits(data.credits)
+        }
+        
+        if(data.credits <= 50){
+setTier('free')
+        }
+
+        else if (data.credits > 50 && data.credits <= 200){
+          setTier('advance')
+        }
+
+        else if (data.credits > 200){
+          setTier('preminmum')
+        }
+        
+        else {
+          console.error("Failed to load credits:", data.error)
+        }
+      } catch (err) {
+        console.error("Load credits error:", err)
+      }
+    }
+
+    async function initialize() {
+      await create_user()
+      setTimeout(() => {
+        loadCredits()
+      }, 500)
+    }
+
+    initialize()
+  }, [user, navigate])
+
+   async function useService(){
+      const res = await fetch(`${API_URL}/api/use-service`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ uid: user.uid })
+  })
+
+ const data = await res.json()
+
+  if (!res.ok) {
+    alert(data.error)
+    return false
+  }
+
+  setCredits(data.credits)
+  return true
+
+  }
+
 
 
  return(
 <>
-  <div className={`${styles.Toggle_btn_wrapper_mobile} ${IsOpen ? styles.Toggle_open_mobile : styles.Toggle_btn_wrapper_mobile}`}>
+  <div className={`${styles.Toggle_btn_wrapper_mobile} ${IsOpen ? styles.Toggle_open : styles.Toggle_btn_wrapper_mobile}`}>
     <button onClick={() => {
 
  if(setIsOpen(!IsOpen)){
@@ -56,11 +145,13 @@ export function Sidebar(){
  }
 
 
-    }}
-     className={styles.toggle_btn_mobile}> <PanelRight strokeWidth={2} size={20} color='#383434'/></button>
+    }} 
+     className={styles.toggle_btn_mobile}> <PanelRight strokeWidth={1.50} size={18} color='#242222'/></button>{IsOpen && (
+      <h3>LexCut</h3>
+     )}
  </div>
 <div className={`${styles.Sidebar_wrapper} ${IsOpen ? styles.Sidebar_open : styles.Sidebar_closed}`}>
- <div className={`${styles.Toggle_btn_wrapper} ${IsOpen ? styles.Toggle_open : styles.Toggle_btn_wrapper}`}>
+ <div className={`${styles.Toggle_btn_wrapper} ${IsOpen ? styles.Toggle_btn_wrapper_open: styles.Toggle_btn_wrapper}`}>
     <button onClick={() => {
 
  if(setIsOpen(!IsOpen)){
@@ -72,14 +163,19 @@ export function Sidebar(){
  }
 
 
-    }} on> <PanelRight strokeWidth={2} size={20} color='#686666'/></button>
+    }} on> <PanelRight strokeWidth={1.50} size={18} color='#242222'/></button> {IsOpen && (
+
+ <h3>LexCut</h3>
+
+
+    )}
  </div>
 
 <div className={`${IsOpen ? styles.Sidebar_open : styles.Sidebar_links_closed}`}>
 
   <ul  className={`${IsOpen ? styles.Links_open : styles.Links_closed}`}>
- <li><History size={19} strokeWidth={1.8} color='#5f5d5d' />{IsOpen && (<span>History</span>)}</li>
- <li onClick={() => setAccount_Open(true)}><CircleUserRound size={19} strokeWidth={1.8} color='#615e5e'/>{IsOpen && (<span>Account</span>)}</li>
+ <li><History size={19} strokeWidth={1.8} color='#242222' />{IsOpen && (<span>History</span>)}</li>
+ <li onClick={() => setAccount_Open(true)}><CircleUserRound size={19} strokeWidth={1.8} color='#242222'/>{IsOpen && (<span>Account</span>)}</li>
  <li onClick={() => {
   if(!subscription){
     setSubscription_Open(true)
@@ -88,12 +184,12 @@ export function Sidebar(){
   else{
     setSubscription_Open(false)
   }
- }}><Sparkles size={19} strokeWidth={1.8} color='#5f5d5d'/>{IsOpen && (<span>Upgrade</span>)}</li>
- <li onClick={() => setSetting_Open(true)}><Cog size={19} strokeWidth={1.8} color='#616161'/>{IsOpen && (<span>Setting</span>)}</li>
+ }}><Sparkles size={19} strokeWidth={1.8} color='#242222'/>{IsOpen && (<span>Upgrade</span>)}</li>
+ <li onClick={() => setSettingsOpen(true)}><Cog size={19} strokeWidth={1.8} color='#242222'/>{IsOpen && (<span>Setting</span>)}</li>
   </ul>
  </div>
 
- <div className={styles.user_info_wrapper}>
+ <div className={styles.user_info_wrapper} onClick={() => setAccount_Open(true)}>
 
    <div className={styles.profile_pic_wrapper}>
     <img src={user?.photoURL || ""} className={styles.profile_pic}/>
@@ -101,8 +197,8 @@ export function Sidebar(){
 
  {IsOpen && (
  <div className={styles.details_users}>
-  <span>{user?.displayName}</span>
-   <span></span>
+  <span className={styles.user_name}>{user?.displayName}</span>
+   <span className={styles.user_tier}>{tier}</span>
  </div>
  )}
 
@@ -192,12 +288,20 @@ export function Sidebar(){
 
  {subscription && (
 
- <div className={styles.Account_Wrapper}>
+ <div className={styles.Account_Wrapper} onClick={() => {
+
+ if(subscription){
+  setSubscription_Open(false)
+ }
+
+
+
+ }}>
 
  <div className={styles.subscription_Card}>
   <div className={styles.subscription_Card_head_wrapper}>
     <h2>Choose your plan</h2>
-    <span className={styles.span_plan}><Rocket size={18} color={"orange"}/>Credits left</span>
+    <span className={styles.span_plan}><Rocket size={18} color={"orange"}/>Credits left : {Credits}</span>
     <span className={styles.span2_plan}>Get the right plan according to your needs and your content needs</span>
 
   </div>
