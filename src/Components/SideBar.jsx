@@ -5,7 +5,7 @@ import { PanelRight } from 'lucide-react';
 import { History,Rocket,Plus,
  CircleUserRound,Sparkles,Cog,Video,ClosedCaption,Droplet,ImagePlay} from 'lucide-react';
 import { signOut } from "firebase/auth";
-import { auth } from "../Backend/Firebase.js";
+import { auth } from "../config/firebase.js";
 import { useNavigate } from 'react-router';
 import { useAuth } from "../Components/Auth.jsx";
 import { createClient } from '@supabase/supabase-js'
