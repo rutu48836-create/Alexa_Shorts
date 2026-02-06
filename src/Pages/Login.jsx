@@ -4,7 +4,7 @@ import styles from '../Styles/Login.module.css'
 import google from '../assets/google.svg'
 import facebook from '../assets/facebook.svg'
 import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../Backend/Firebase.js";
+import { auth, googleProvider } from "../config/firebase.js";
 import { useNavigate } from 'react-router';
 import apple from '../assets/apple.webp'
 import { getAuth } from "firebase/auth"

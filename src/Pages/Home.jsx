@@ -6,7 +6,7 @@ import {ArrowUp,Cog,Sparkle,Link,File,ImagePlay,ScrollText} from 'lucide-react';
 import { Sidebar } from "../Components/SideBar";
 import { useAuth } from "../Components/Auth.jsx";
 import { useNavigate } from "react-router";
-import { API_URL } from "../config.js";
+import { API_URL } from "../config/config.js";
 
 export function Home(){
   
