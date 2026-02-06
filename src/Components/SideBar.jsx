@@ -1,6 +1,6 @@
 
 import { createContext, useContext, useEffect, useState } from "react";
-import styles from "../Styles/SideBar.module.css"
+import styles from "../Styles/Sidebar.module.css"
 import { PanelRight } from 'lucide-react';
 import { History,Rocket,Plus,
  CircleUserRound,Sparkles,Cog,Video,ClosedCaption,Droplet,ImagePlay} from 'lucide-react';
@@ -9,7 +9,7 @@ import { auth } from "../Backend/Firebase.js";
 import { useNavigate } from 'react-router';
 import { useAuth } from "../Components/Auth.jsx";
 import { createClient } from '@supabase/supabase-js'
-import { API_URL } from "../config.js";
+import { API_URL } from "../config/config.js";
 
 export function Sidebar({credits,setSettingsOpen}){
 
